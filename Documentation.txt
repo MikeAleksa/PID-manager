@@ -1,0 +1,4 @@
+References:
+    https://en.wikipedia.org/wiki/Bit_manipulation#Bit_manipulation_in_the_C_programming_language
+    https://github.com/torvalds/linux/blob/master/kernel/pid.c
+
