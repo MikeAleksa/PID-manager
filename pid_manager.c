@@ -4,7 +4,7 @@
 
 #define MIN_PID 300
 #define MAX_PID 5000
-
+const unsigned char fullWord = ~((unsigned char) 0);     /* used to check for full words in the bitmap */
 unsigned char *pid_map = NULL;
 
 /* allocate a bitmap using an array of unsigned chars and assign the bitmap to the global pointer 'pid_map'
@@ -21,22 +21,23 @@ int allocate_map(void) {
     else return 1;
 }
 
-// TODO: find a more efficient way of searching for free pids; check full words at a time?
-//  another possibility could be to keep a stack of released pids and assign from those?
-
 /* search for first free pid between MIN_PID and MAX_PID and allocate that pid
  * returns the pid number, or will return -1 if all pids are already allocated */
 int allocate_pid(void) {
-    // search for first free pid between MIN_PID and MAX_PID and allocate
-    for (int i = MIN_PID; i <= MAX_PID; i++) {
-        // if statement checks if (a bit in the pid_map & 1) is false, i.e. the bit in pid_map = 0
-        if (!(pid_map[i / CHAR_BIT] & (1u << (i % CHAR_BIT)))) {
-            pid_map[i / CHAR_BIT] |= (1u << (i % CHAR_BIT));
-            return i;
+    // search for first word in the pid_map that is not full
+    for (int word = 0; word <= MAX_PID / CHAR_BIT; word++) {
+        if (pid_map[word] != fullWord) {
+            for (int bit = 0; bit < CHAR_BIT; bit++) {
+                // if statement checks if (a bit in the pid_map & 1) is false, i.e. the bit in pid_map = 0
+                if (pid_map[word] & (1u << bit)) continue;
+                pid_map[word] |= (1u << bit);
+                return (word * CHAR_BIT) + bit;
+            }
         }
     }
     return -1;
 }
+
 
 /* Release a pid by setting it's associated bit in pid_map to 0 using bitwise operators */
 void release_pid(int pid) {
