@@ -13,7 +13,7 @@ int main() {
     if (map_allocated == -1)
         return (1);
 
-    for (int i = 0; i <= 4710; i++) {
+    for (int i = 0; i <= 4810; i++) {
         int pid = allocate_pid();
         if (pid == -1)
             printf("allocation failed: no pids available\n");
