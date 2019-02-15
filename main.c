@@ -6,7 +6,6 @@
 // This is a driver program to test the pid_manager program
 
 int main() {
-
     srand(time(NULL));
 
     int map_allocated = allocate_map();
@@ -14,19 +13,15 @@ int main() {
         return (-1);
 
     // allocate all available pids with no print statements
-    for (int i = 0; i <= 5001; i++) {
+    for (int i = MIN_PID; i <= MAX_PID; i++) {
         int pid = allocate_pid();
-        if (pid == -1)
-            printf("allocation failed: no pids available\n");
-        else
-            printf("allocated pid %i\n", pid);
     }
 
     // show release_pid and allocate_pid working with print statements
-    for (int j = 0; j < 3; j++) {
-        // release pid between 300 and 5000
+    for (int j = 0; j < 100000; j++) {
+        // release pid between MIN_PID and MAX_PID
         for (int i = 0; i < 5; i++) {
-            int pid = rand() % 4700 + 300;
+            int pid = MIN_PID + rand() % (MAX_PID + 1 - MIN_PID);
             release_pid(pid);
             printf("release pid %i\n", pid);
         }
