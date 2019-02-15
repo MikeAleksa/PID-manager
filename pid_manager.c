@@ -3,7 +3,7 @@
 #include "pid_manager.h"
 
 #define MIN_PID 300
-#define MAX_PID 5001
+#define MAX_PID 5000
 const unsigned char fullWord = ~((unsigned char) 0);     /* used to check for full words in the bitmap */
 unsigned char *pid_map = NULL;
 
@@ -30,26 +30,12 @@ int allocate_map(void) {
 /* search for first free pid between MIN_PID and MAX_PID and allocate that pid
  * returns the pid number, or will return -1 if all pids are already allocated */
 int allocate_pid(void) {
-    // search for first word in the pid_map that is not full
-    for (int word = MIN_PID / CHAR_BIT; word < MAX_PID / CHAR_BIT; word++) {
-        // handle word containing MIN_PID if it contains both reserved and unreserved pids
-        //  by checking the correspond bits >= MIN_PID
-        if (word == MIN_PID / CHAR_BIT && MIN_PID % CHAR_BIT != 0) {
-            for (int bit = MIN_PID % CHAR_BIT; bit < CHAR_BIT; bit++) {
-                if (pid_map[word] & (1u << bit)) continue;
-                pid_map[word] |= (1u << bit);
-                return (word * CHAR_BIT) + bit;
-            }
-        }
-            // handle all other words that contain only non-reserved pids by checking checking
-            //  individual bits only if the bits in the word are not all 1s
-        else if (pid_map[word] != fullWord) {
-            for (int bit = 0; bit < CHAR_BIT; bit++) {
-                // if statement checks if (a bit in the pid_map & 1) is false, i.e. the bit in pid_map = 0
-                if (pid_map[word] & (1u << bit)) continue;
-                pid_map[word] |= (1u << bit);
-                return (word * CHAR_BIT) + bit; // pid numbers index from
-            }
+    // search for first free pid between MIN_PID and MAX_PID and allocate
+    for (int bit = MIN_PID; bit <= MAX_PID; bit++) {
+        // if statement checks if (a bit in the pid_map & 1) is false, i.e. the bit in pid_map = 0
+        if (!(pid_map[bit / CHAR_BIT] & (1 << (bit % CHAR_BIT)))) {
+            pid_map[bit / CHAR_BIT] |= (1 << (bit % CHAR_BIT));
+            return bit;
         }
     }
     return -1;
