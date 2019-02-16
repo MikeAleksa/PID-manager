@@ -24,16 +24,16 @@ int main() {
 
     /* show release_pid and allocate_pid working with print statements */
     for (int j = 0; j < 3; j++) {
-        /* release a random pid between MIN_PID and MAX_PID */
         for (int i = 0; i < 5; i++) {
+            /* release a random pid between MIN_PID and MAX_PID */
             int pid = MIN_PID + rand() % (MAX_PID + 1 - MIN_PID);
             release_pid(pid);
             printf("release pid %i\n", pid);
         }
         printf("\n");
 
-        /* try to allocate one more pid than available */
         for (int i = 0; i < 6; i++) {
+            /* try to allocate a pid */
             int pid = allocate_pid();
             if (pid == -1)
                 printf("allocation failed: no pids available\n");

@@ -15,4 +15,4 @@ Problem:
 
 
 Assumptions:
-    The assumption made about this project is that pid values start at 0, and pids below MIN_PID can exist but are reserved. Therefore, the data structure that holds a map representing the availability of pids will allocate enough space to track the availability of pids in (0, MAX_PID) but allocate_pid() is only able to assign pids in (MIN_PID, MAX_PID).
+    The assumptions made about this project is that pid values start at 0, and pids below MIN_PID can exist but are reserved. Therefore, the data structure that holds a map representing the availability of pids will allocate enough space to track the availability of pids in the range (0, MAX_PID) but allocate_pid() is only able to assign pids in the range [MIN_PID, MAX_PID].

@@ -1,0 +1,50 @@
+* * * * * * * * * * * * * * * * * * * *
+*   pid_manager.c and pid_manager.h   *
+* * * * * * * * * * * * * * * * * * * *
+
+DESCRIPTION:
+    The pid_manager program provides an interface to allocate a bitmap that represents the availability of pids and assign and release pids within an allowable range of values. Some pids will remain reserved, and cannot be allocated by the pid_manager.
+
+PREPROCESSOR CONSTANTS:
+MIN_PID represents the lowest value pid that can be assigned by the pid_manager
+MAX_PID represents the highest value pid than can be assigned by the pid_manager
+
+FIELDS:
+unsigned char *pid_map - This pointer is used to store the location of a bitmap allocated in the allocate_map() function.
+
+size_t words_in_map - This variable holds the number of words in the bitmap allocated in the allocate_map() function.
+
+const unsigned char fullWord - This constant stores an unsigned char with each bit having a value of 1. It is used in allocate_pid() to check if every pid represented by a word in the pid_map is already assigned, without having to check each bit individually.
+
+FUNCTIONS:
+int allocate_map(void)
+    This function allocates and initializes a bitmap of unsigned char that can represent pid values from 0 to, and including, MAX_PID. Within the function, char *pid_map is assigned the location of the allocated bitmap, and size_t words_in_map is set to the number of words in the bitmap.
+     Returns 1 if the bitmap was allocated successfully, or -1 if the allocation was unsuccessful.
+     Accepts no parameters.
+
+int allocate_pid(void)
+    This function searches through the bitmap pointed to by pid_map and locates the first available pid in the range [MIN_PID, MAX_PID]. Values of 0 in the bitmap represent a free pid, and values of 1 represent a currently assigned pid. The search is conducted by comparing words in the bitmap to the constant fullWord to see if entire words in the bitmap are already assigned. If a word in the bitmap is not already entirely assigned, the bits in the word are checked sequentially until an available pid in the range [MIN_PID, MAX_PID] is found. The available pid will then be assigned in the bitmap and its value returned.
+    Returns the assigned pid value as an int, or -1 if there are no available pids to allocate.
+    Accepts no parameters.
+
+void release_pid(int pid)
+    This function...
+    Returns no value.
+    Accepts one parameter, int pid, which is the pid value to be
+
+void deallocate_map(void)
+    This function deallocates the bitmap pointed to by pid_map and sets the pid_map pointer to NULL.
+    Returns no value.
+    Accepts no parameters.
+
+
+* * * * * * * *
+*   main.c    *
+* * * * * * * *
+
+DESCRIPTION:
+    The main program is used to procedurally demonstrate the function of the pid_manager.
+
+    The program uses the pid_manager API to allocate a bitmap of pids. If the bitmap is not allocated succesfully, the program will stop with an exit code of -1.
+
+    A successfully allocated bitmap is filled entirely from MIN_PID to MAX_PID and a loop releases a group of random pids and subsequently tries to allocate more pids. The pids being released and allocated in this loop are printed to the console for demonstration purposes.
