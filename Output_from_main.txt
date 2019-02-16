@@ -1,0 +1,43 @@
+all pids allocated
+
+release pid 3838
+release pid 3163
+release pid 2388
+release pid 4049
+release pid 1264
+
+allocated pid 1264
+allocated pid 2388
+allocated pid 3163
+allocated pid 3838
+allocated pid 4049
+allocation failed: no pids available
+
+release pid 861
+release pid 977
+release pid 2988
+release pid 4543
+release pid 2665
+
+allocated pid 861
+allocated pid 977
+allocated pid 2665
+allocated pid 2988
+allocated pid 4543
+allocation failed: no pids available
+
+release pid 1773
+release pid 5000
+release pid 2800
+release pid 3184
+release pid 3368
+
+allocated pid 1773
+allocated pid 2800
+allocated pid 3184
+allocated pid 3368
+allocated pid 5000
+allocation failed: no pids available
+
+
+Process finished with exit code 0

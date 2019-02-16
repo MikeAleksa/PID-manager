@@ -1,0 +1,5 @@
+Authors: Michael Aleksa - prepared documentation and programmed pid_manager.c, pid_manager.h, and main.c
+
+Problem:
+
+Assumptions:

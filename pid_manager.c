@@ -1,3 +1,5 @@
+/* Written by Michael Aleksa for CISC-3320 EM6 */
+
 #include <stdlib.h>         /* for calloc() */
 #include <limits.h>         /* for CHAR_BIT */
 #include "pid_manager.h"
@@ -16,8 +18,7 @@ int allocate_map(void) {
     if ((MAX_PID + 1) % CHAR_BIT != 0) {
         words_in_map += 1;
     }
-    /* allocate the pid_map and return -1 if allocation fails, or 1 if allocation succeeds
-     *  note: calloc() initializes all values to 0 */
+    /* note: calloc() initializes all values to 0 */
     pid_map = (unsigned char *) calloc(words_in_map, sizeof(char));
     if (pid_map == NULL) return -1;
     else return 1;
@@ -25,12 +26,12 @@ int allocate_map(void) {
 
 /* search for first free pid between MIN_PID and MAX_PID and allocate
  * returns the pid number, or  -1 if all pids are already allocated
- *  note: checking whole words at a time is faster than checking each bits sequentially */
+ *  note: checking whole words at a time is faster than checking each bit sequentially */
 int allocate_pid(void) {
     /* search for first word in the pid_map that is not full */
     for (int word = MIN_PID / CHAR_BIT; word < words_in_map; word++) {
         if (pid_map[word] != fullWord) {
-            /* for each bit in the word, allocate and assign pid available and within assignable range */
+            /* for each bit in the word, allocate and assign pid if available and within assignable range */
             for (int bit = 0; bit < CHAR_BIT; bit++) {
                 int pid = word * CHAR_BIT + bit;
                 if (pid_map[word] & (1u << bit) || pid < MIN_PID || pid > MAX_PID)
