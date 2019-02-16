@@ -16,8 +16,8 @@ int allocate_map(void) {
     if ((MAX_PID + 1) % CHAR_BIT != 0) {
         words_in_map += 1;
     }
-    /* allocate the pid_map and return -1 if allocation fails, or 1 if allocation succeeds */
-    /*  note: calloc() initializes all values to 0 */
+    /* allocate the pid_map and return -1 if allocation fails, or 1 if allocation succeeds
+     *  note: calloc() initializes all values to 0 */
     pid_map = (unsigned char *) calloc(words_in_map, sizeof(char));
     if (pid_map == NULL) return -1;
     else return 1;
