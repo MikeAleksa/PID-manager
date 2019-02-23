@@ -3,7 +3,7 @@
 * * * * * * * * * * * * * * * * * * * *
 
 DESCRIPTION:
-    The pid_manager program provides an interface to allocate a bitmap that represents the availability of pids and assign and release pids within an allowable range of values. Some pids will remain reserved, and cannot be allocated by the pid_manager.
+    The pid_manager program provides an interface to allocate a bitmap that represents the availability of pids, and assign and release pids within an allowable range of values. Some pids will remain reserved, and cannot be allocated by the pid_manager.
 
 PREPROCESSOR CONSTANTS:
 MIN_PID represents the lowest value pid that can be assigned by the pid_manager
@@ -28,9 +28,9 @@ int allocate_pid(void)
     Accepts no parameters.
 
 void release_pid(int pid)
-    This function...
+    This function sets a pid, passed in as a parameter, to 0 in the bitmap making it available for reallocation. Any pid outside the allowable range, [MIN_PID, MAX_PID] will be ignored.
     Returns no value.
-    Accepts one parameter, int pid, which is the pid value to be
+    Accepts one parameter, int pid, which is the pid value to be released.
 
 void deallocate_map(void)
     This function deallocates the bitmap pointed to by pid_map and sets the pid_map pointer to NULL.
@@ -48,3 +48,5 @@ DESCRIPTION:
     The program uses the pid_manager API to allocate a bitmap of pids. If the bitmap is not allocated succesfully, the program will stop with an exit code of -1.
 
     A successfully allocated bitmap is filled entirely from MIN_PID to MAX_PID and a loop releases a group of random pids and subsequently tries to allocate more pids. The pids being released and allocated in this loop are printed to the console for demonstration purposes.
+
+    Finally, the pid_map is deallocated and the program is exited with a code of 0.
