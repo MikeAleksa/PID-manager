@@ -18,7 +18,7 @@ int main() {
 
     /* allocate all available pids with no print statements */
     for (int i = MIN_PID; i <= MAX_PID; i++) {
-        int pid = allocate_pid();
+        allocate_pid();
     }
     printf("all pids allocated\n\n");
 

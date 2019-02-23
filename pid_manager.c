@@ -11,10 +11,11 @@ const unsigned char fullWord = ~((unsigned char) 0);    /* to check for full wor
 /* allocate a bitmap representing pids from 0 to MAX_PID
  * return values are 1 (successful allocation) and -1 (unsuccessful allocation)
  *  note: this bitmap allocates space for pids below MIN_PID under the assumption they will be used as
- *  pids reserved for special processes, similar to the RESERVED_PIDS in the linux kernel's pid.c */
+ *  pids reserved for special processes */
 int allocate_map(void) {
-    /* calculate ceiling of MAX_PID / CHAR_BIT */
+    /* calculate ceiling of (MAX_PID / CHAR_BIT) */
     words_in_map = (MAX_PID + 1) / CHAR_BIT;
+    /* add a word for the remaining bits that do not divide evenly into CHAR_BIT */
     if ((MAX_PID + 1) % CHAR_BIT != 0) {
         words_in_map += 1;
     }
@@ -28,10 +29,10 @@ int allocate_map(void) {
  * returns the pid number, or  -1 if all pids are already allocated
  *  note: checking whole words at a time is faster than checking each bit sequentially */
 int allocate_pid(void) {
-    /* search for first word in the pid_map that is not full */
+    /* search for first word in the pid_map that is not full, starting at MIN_PID */
     for (int word = MIN_PID / CHAR_BIT; word < words_in_map; word++) {
         if (pid_map[word] != fullWord) {
-            /* for each bit in the word, allocate and assign pid if available and within assignable range */
+            /* for each bit in the word, allocate and assign pid only if available and within assignable range */
             for (int bit = 0; bit < CHAR_BIT; bit++) {
                 int pid = word * CHAR_BIT + bit;
                 if (pid_map[word] & (1u << bit) || pid < MIN_PID || pid > MAX_PID)
