@@ -43,7 +43,7 @@ void deallocate_map(void)
 * * * * * * * *
 
 DESCRIPTION:
-    The main program is used to procedurally demonstrate the function of the pid_manager.
+    The main program is used to procedurally demonstrate the function of the pid_manager and generate an output that shows the API working.
 
     The program uses the pid_manager API to allocate a bitmap of pids. If the bitmap is not allocated succesfully, the program will stop with an exit code of -1.
 
