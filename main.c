@@ -9,14 +9,12 @@
 
 #define NUM_THREADS 100
 
-void create_threads();
-
 void *simulate_process_runnable();
 
 int main() {
     srand(time(NULL));
 
-    /* needed for pthread */
+    /* create array of thread ids */
     pthread_t tid[NUM_THREADS];
 
     /* allocate pid map */
@@ -31,6 +29,7 @@ int main() {
         pthread_create(&tid[i], NULL, simulate_process_runnable, NULL);
     }
 
+    /* wait until all threads are finished */
     for (int i = 0; i < NUM_THREADS; i++) {
         pthread_join(tid[i], NULL);
     }
@@ -38,11 +37,6 @@ int main() {
     /* deallocate pid map */
     deallocate_map();
     return 0;
-}
-
-
-void create_threads() {
-
 }
 
 void *simulate_process_runnable() {
@@ -54,8 +48,8 @@ void *simulate_process_runnable() {
     } else {
         printf("allocated pid %i\n", pid);
     }
-    /* sleep for a random amount of time between 5 and 30 seconds */
-    unsigned int sleep_time = 5u + (rand() % 25u);
+    /* sleep for a random amount of time between 0 and 5 seconds */
+    unsigned int sleep_time = 0u + (rand() % 5u);
     sleep(sleep_time);
     /* release pid */
     release_pid(pid);
