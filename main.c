@@ -8,14 +8,16 @@
 #include "pid_manager.h"
 
 #define NUM_THREADS 100
+pthread_mutex_t lock;
 
 void *simulate_process_runnable();
 
 int main() {
     srand(time(NULL));
 
-    /* create array of thread ids */
+    /* create array of thread ids and initialize mutex */
     pthread_t tid[NUM_THREADS];
+    pthread_mutex_init(&lock, NULL);
 
     /* allocate pid map */
     int map_allocated = allocate_map();
@@ -34,14 +36,19 @@ int main() {
         pthread_join(tid[i], NULL);
     }
 
-    /* deallocate pid map */
+    /* deallocate pid map and destory mutex */
     deallocate_map();
+    pthread_mutex_destroy(&lock);
     return 0;
 }
 
 void *simulate_process_runnable() {
-    /* try to allocate a pid and return if unable */
+    /* try to allocate a pid and return if unable
+     * use mutex to block other threads while a thread is allocating a pid,
+     * so two threads cannot allocate the same pid */
+    pthread_mutex_lock(&lock);
     int pid = allocate_pid();
+    pthread_mutex_unlock(&lock);
     if (pid == -1) {
         printf("allocation failed: no pids available\n");
         pthread_exit(0);
