@@ -1,6 +1,21 @@
-* * * * * * * * * * * * * * * * * * * *
-*   pid_manager.c and pid_manager.h   *
-* * * * * * * * * * * * * * * * * * * *
+* * * * * * * *
+*   main.c    *
+* * * * * * * *
+
+DESCRIPTION:
+    The main program is used to procedurally demonstrate the function of the pid_manager and generate an output that shows the API working.
+
+    The program uses the pid_manager API to allocate a bitmap of pids. If the bitmap is not allocated succesfully, the program will stop with an exit code of -1.
+
+    A successfully allocated bitmap is filled entirely from MIN_PID to MAX_PID and a loop releases a group of random pids and subsequently tries to allocate more pids. The pids being released and allocated in this loop are printed to the console for demonstration purposes.
+
+    Finally, the pid_map is deallocated and the program is exited with a code of 0.
+
+
+
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+*   pid_manager.c and pid_manager.h - unchanged from Homework 1   *
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 DESCRIPTION:
     The pid_manager program provides an interface to allocate a bitmap that represents the availability of pids, and assign and release pids within an allowable range of values. Some pids will remain reserved, and cannot be allocated by the pid_manager.
@@ -37,16 +52,3 @@ void deallocate_map(void)
     Returns no value.
     Accepts no parameters.
 
-
-* * * * * * * *
-*   main.c    *
-* * * * * * * *
-
-DESCRIPTION:
-    The main program is used to procedurally demonstrate the function of the pid_manager and generate an output that shows the API working.
-
-    The program uses the pid_manager API to allocate a bitmap of pids. If the bitmap is not allocated succesfully, the program will stop with an exit code of -1.
-
-    A successfully allocated bitmap is filled entirely from MIN_PID to MAX_PID and a loop releases a group of random pids and subsequently tries to allocate more pids. The pids being released and allocated in this loop are printed to the console for demonstration purposes.
-
-    Finally, the pid_map is deallocated and the program is exited with a code of 0.

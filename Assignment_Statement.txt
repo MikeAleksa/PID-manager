@@ -1,19 +1,5 @@
-Authors: Michael Aleksa - prepared documentation and programmed pid_manager.c, pid_manager.h, and main.c
+Authors: Michael Aleksa - wrote documentation and all code
 
 Problem:
-    Design a pid manager that can assign a unique pid to a process, and may only re-assign this pid once it has been released by any active processes. No two active processes should ever have the same pid. This should be implemented using the following API and constants:
-
-      #define MIN_PID 300
-      #define MAX_PID 5000
-      int allocate_map(void)
-        -- create and initialize a data structure for representing pids
-        -- return 1 if allocation is successful and -1 if unsuccessful
-      int allocate_pid(void)
-        -- allocate and return a pid
-        -- if all available pids are already in use, return -1
-      void release_pid(int_pid)
-        -- release a pid
-
 
 Assumptions:
-    The assumption made about this project is that pid values start at 0, and pids below MIN_PID can exist but are reserved. Therefore, the data structure that holds a map representing the availability of pids will allocate enough space to track the availability of pids in the range [0, MAX_PID] but allocate_pid() is only able to assign pids in the range [MIN_PID, MAX_PID].
