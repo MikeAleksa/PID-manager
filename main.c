@@ -4,14 +4,20 @@
 #include <time.h>           /* for time() to seed srand() */
 #include <stdlib.h>         /* for rand() */
 #include <unistd.h>         /* for sleep() */
+#include <pthread.h>        /* for pthreads */
 #include "pid_manager.h"
+
+#define NUM_THREADS 100
 
 void create_threads();
 
-void simulate_process();
+void *simulate_process_runnable();
 
 int main() {
     srand(time(NULL));
+
+    /* needed for pthread */
+    pthread_t tid[NUM_THREADS];
 
     /* allocate pid map */
     int map_allocated = allocate_map();
@@ -20,11 +26,14 @@ int main() {
         exit(-1);
     }
 
-    /* create 100 threads */
-    create_threads();
+    /* create 100 threads and simulate processes on threads*/
+    for (int i = 0; i < NUM_THREADS; i++) {
+        pthread_create(&tid[i], NULL, simulate_process_runnable, NULL);
+    }
 
-    /* simulate processes on threads */
-
+    for (int i = 0; i < NUM_THREADS; i++) {
+        pthread_join(tid[i], NULL);
+    }
 
     /* deallocate pid map */
     deallocate_map();
@@ -36,12 +45,12 @@ void create_threads() {
 
 }
 
-void simulate_process() {
+void *simulate_process_runnable() {
     /* try to allocate a pid and return if unable */
     int pid = allocate_pid();
     if (pid == -1) {
         printf("allocation failed: no pids available\n");
-        return;
+        pthread_exit(0);
     } else {
         printf("allocated pid %i\n", pid);
     }
@@ -50,5 +59,6 @@ void simulate_process() {
     sleep(sleep_time);
     /* release pid */
     release_pid(pid);
-    printf("release pid %i\n", pid);
+    printf("released pid %i\n", pid);
+    pthread_exit(0);
 }
