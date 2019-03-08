@@ -3,19 +3,32 @@
 * * * * * * * *
 
 DESCRIPTION:
-    The main program is used to procedurally demonstrate the function of the pid_manager and generate an output that shows the API working.
+    The main.c program simulates multi-threaded processes allocation, execution, and termination using 100 pthreads. A thread id is allocated for each pthread and a mutex is initialized so it is available to block pthreads when a race condition might occur. A pid_map is allocated to track the allocation state of each pid. Next, each pthread is created and runs the simulate_process_runnable() function, which simulates a process running on that thread. After creation of all pthreads, main() waits for each pthread to finish and finally deallocates the pid_map and destroys the mutex.
 
-    The program uses the pid_manager API to allocate a bitmap of pids. If the bitmap is not allocated succesfully, the program will stop with an exit code of -1.
-
-    A successfully allocated bitmap is filled entirely from MIN_PID to MAX_PID and a loop releases a group of random pids and subsequently tries to allocate more pids. The pids being released and allocated in this loop are printed to the console for demonstration purposes.
-
-    Finally, the pid_map is deallocated and the program is exited with a code of 0.
+    If initialization of the mutex or allocation of the pid_map fails, main() will exit early with an error message describing the reason.
 
 
+PREPROCESSOR CONSTANTS AND GLOBAL VARIABLES:
+    NUM_THREADS represents the number of pthreads used to simulate multi-threaded processes execution.
 
-* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-*   pid_manager.c and pid_manager.h - unchanged from Homework 1   *
-* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+    pthread_mutex_t lock is a pthread mutex used to block other pthreads because of race conditions that occur if multiple threads are interacting with the pid_map at the same time.
+
+
+MAIN - FIELDS:
+    pthread_t tid[] is an array of pthread ids, used in the creation of pthreads.
+
+    int map_allocated is an integer used to hold the return value of allocate_map(), which represents the success or failure of the allocation of a pid_map.
+
+FUNCTIONS:
+    void *simulate_process_runnable()
+        This function is used to simulate a process running. The function uses a mutex to block other threads and allocates a pid for the simulated process. The other threads are unblocked and the simulate process sleeps for a random amount of time between 0 and 5 seconds to simulate the execution of process. When the simulated execution is complete, the other threads are once again blocked and the pid is released, and finally the pthread is exited with code 0.
+        Returns no value.
+        Accepts no parameters.
+
+
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+*   pid_manager.c and pid_manager.h - remains unchanged from Homework 1   *
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 DESCRIPTION:
     The pid_manager program provides an interface to allocate a bitmap that represents the availability of pids, and assign and release pids within an allowable range of values. Some pids will remain reserved, and cannot be allocated by the pid_manager.

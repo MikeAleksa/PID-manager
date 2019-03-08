@@ -18,8 +18,8 @@ int main() {
     /* create an array of pthread ids and initialize mutex */
     pthread_t tid[NUM_THREADS];
     if (pthread_mutex_init(&lock, NULL) != 0) {
-        printf("unable to intialize mutex\n");
-        return 0;
+        printf("unable to initialize mutex\n");
+        exit(-1);
     }
 
     /* allocate pid map */
@@ -65,7 +65,7 @@ void *simulate_process_runnable() {
     /* sleep for a random amount of time between 0 and 5 seconds */
     sleep(rand() % 5u);
 
-    /* release pid */
+    /* release pid and terminate pthread */
     pthread_mutex_lock(&lock);
     release_pid(pid);
     printf("released pid %i\n", pid);
