@@ -1,5 +1,5 @@
 Authors: Michael Aleksa - wrote documentation and all code
 
-Problem: Use threads to simulate processes running. A simulated process should allocate a pid, simulate running for a random amount of time by using sleep(), and then release the pid so it is available for re-allocation when the simulated process terminates. No two simulated processes should concurrently have the same pid allocated.
+Problem: Use threads to simulate processes running. A simulated process should allocate a pid, simulate running for a random amount of time by using sleep(), and then release the pid so it is available for re-allocation when the simulated process terminates. No two simulated processes should concurrently have the same pid allocated. To accomplish this use mutex locks to avoid race conditions where multiple threads can modify the pid map at the same time.
 
 Assumptions: No new assumptions are made from homework 1.
