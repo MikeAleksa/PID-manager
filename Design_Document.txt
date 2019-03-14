@@ -26,9 +26,9 @@ FUNCTIONS:
         Accepts no parameters.
 
 
-* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-*   pid_manager.c and pid_manager.h - remains unchanged from Homework 1   *
-* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+* * * * * * * * * * * * * * * * * * * * *
+*   pid_manager.c and pid_manager.h1    *
+* * * * * * * * * * * * * * * * * * * * *
 
 DESCRIPTION:
     The pid_manager program provides an interface to allocate a bitmap that represents the availability of pids, and assign and release pids within an allowable range of values. Some pids will remain reserved, and cannot be allocated by the pid_manager.

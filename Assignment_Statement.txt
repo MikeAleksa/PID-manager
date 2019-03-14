@@ -1,5 +1,21 @@
 Authors: Michael Aleksa - wrote documentation and all code
 
-Problem: Use threads to simulate processes running. A simulated process should allocate a pid, simulate running for a random amount of time by using sleep(), and then release the pid so it is available for re-allocation when the simulated process terminates. No two simulated processes should concurrently have the same pid allocated. To accomplish this use mutex locks to avoid race conditions where multiple threads can modify the pid map at the same time.
+Problem (HW2 & HW3):
+    Use threads to simulate processes running. A simulated process should allocate a pid, simulate running for a random amount of time by using sleep(), and then release the pid so it is available for re-allocation when the simulated process terminates. No two simulated processes should concurrently have the same pid allocated. To accomplish this use mutex locks to avoid race conditions where multiple threads can modify the pid map at the same time.
 
-Assumptions: No new assumptions are made from homework 1.
+Problem (HW1):
+    Design a pid manager that can assign a unique pid to a process, and may only re-assign this pid once it has been released by any active processes. No two active processes should ever have the same pid. This should be implemented using the following API and constants:
+
+                     #define MIN_PID 300
+                     #define MAX_PID 5000
+                     int allocate_map(void)
+                       -- create and initialize a data structure for representing pids
+                       -- return 1 if allocation is successful and -1 if unsuccessful
+                     int allocate_pid(void)
+                       -- allocate and return a pid
+                       -- if all available pids are already in use, return -1
+                     void release_pid(int_pid)
+                       -- release a pid
+
+Assumptions:
+    The assumption made about this project is that pid values start at 0, and pids below MIN_PID can exist but are reserved. Therefore, the data structure that holds a map representing the availability of pids will allocate enough space to track the availability of pids in the range [0, MAX_PID] but allocate_pid() is only able to assign pids in the range [MIN_PID, MAX_PID].
